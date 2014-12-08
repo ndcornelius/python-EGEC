@@ -77,4 +77,16 @@ def modinv(a, m):
     else:
         return x % m
 
+    # Simple VERY INEFFICIENT primality test
+def isprime(x):
+    if x == 1: return False
+
+    elif x <= 0: return False
+
+    elif x%2 == 0: return False
+
+    else:
+        for y in range(3, x/2+1, 2):
+            if x % y == 0: return False
+        return True
 
