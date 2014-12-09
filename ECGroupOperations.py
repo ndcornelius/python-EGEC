@@ -1,4 +1,5 @@
 import math
+import randint from random
 
 # Group operations for a group on Elliptic Curves for use in implementation of El-Gamal cryptosystem.
 
@@ -66,7 +67,8 @@ def ec_add(m, n):
 track = 0
     # An efficient algorithm for finding a certain power of the generator.
 def ec_multiply(G, m):
-    if m <= 0: raise Exception( "Cannot multiply by 0 or negative number")
+    if m < 0: raise Exception( "Cannot multiply by a negative number")
+    elif m == 0: return ('e', 'e')
     elif m == 1: return G 
     elif m % 2 == 0:
         z = ec_multiply(G, m/2)
@@ -107,3 +109,8 @@ def isprime(x):
             if x % y == 0: return False
         return True
 
+def gen_prime(lb, ub):
+
+    while True:
+        prime = randint(lb, ub)
+        if isprime(prime) is True: return prime

@@ -14,7 +14,7 @@ a = -3 # Coefficient of x^3 in the elliptic curve
 EC.set_curve(a, b, p)
 
 G = (Gx, Gy)
-LIBRARY = [EC.ec_multiply(G, x) for x in range(31,127)] # Message encoding library
+LIBRARY = [EC.ec_multiply(G, x) for x in range(0,127)] # Message encoding library
 
 #priv_key = 0 # Initial global declarations of public and private key
 #pub_key = 0
@@ -55,14 +55,15 @@ def ec_decrypt(encm, priv_key):
 
     # Turns an ASCII character message in to an element of the Group
 def encode(message):
-    if message in (ascii_letters + digits + punctuation + chr(31)):
+    if message in (ascii_letters + digits + punctuation):
         y = int(ord(message))
         #print (y)
         return LIBRARY[y]
+    else: return False
 
     # Turns an encoded message into an ASCII character
 def decode(message):
-    x = 32
+    x = 0
     while message != LIBRARY[x]: 
         x += 1
         #print(str(LIBRARY[x]) + "   " + str(x) + " = " + str(chr(x)))
