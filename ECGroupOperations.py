@@ -75,7 +75,8 @@ def ec_multiply(G, m):
         z = ec_add(ec_multiply(G, m-1), G)
         return ec_add(z, G)
 
- # Algorithm taken from http://stackoverflow.com/questions/4798654/modular-multiplicative-inverse-function-in-python
+ # egcd and modinv functions obtained from http://stackoverflow.com/questions/4798654/modular-multiplicative-inverse-function-in-python. 
+#Original source: https://en.wikibooks.org/wiki/Algorithm_Implementation/Mathematics/Extended_Euclidean_algorithm
 
     # Recursive Euclidian Algorithm
 def egcd(a, b):
@@ -89,7 +90,7 @@ def egcd(a, b):
 def modinv(a, m):
     g, x, y = egcd(a, m)
     if g != 1:
-        raise Exception('modular inverse does not exist')
+        raise Exception('Modular inverse does not exist')
     else:
         return x % m
 
