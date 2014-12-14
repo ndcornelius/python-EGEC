@@ -1,4 +1,5 @@
-import ECGroupOperations as ec
+import GroupOperations as ec
+from ModularMath import modular_sqrt
 
-print(ec.modular_sqrt(4, 5))
-print(ec.modular_sqrt(4, 7))
+print(modular_sqrt(4, 5))
+print(modular_sqrt(4, 7))

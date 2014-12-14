@@ -1,5 +1,5 @@
 import Crypto
-import ECGroupOperations as EC
+import GroupOperations as EC
 
 alice_keys = Crypto.generate_crypto_keys()
 print ( "Keys:\nPrivate key: %s\n\nPublic key: %s\n" % (str(alice_keys[0]), str(alice_keys[1])))

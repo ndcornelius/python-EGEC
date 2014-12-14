@@ -1,7 +1,8 @@
-import ECGroupOperations as EC
+import GroupOperations as EC
 from random import randint
 from string import ascii_letters, digits, punctuation, whitespace
 from math import floor
+from ModularMath import modular_sqrt
 
 p = 6277101735386680763835789423207666416083908700390324961279 #Prime modulus
 r = 6277101735386680763835789423176059013767194773182842284081 #Order of group
@@ -66,7 +67,7 @@ def encode(message):
     for i in range(1, 20):
         x = k*m + i
         c = (pow(x, 3, p) + a*x + b) % p
-        y = EC.modular_sqrt(c, p)
+        y = modular_sqrt(c, p)
         if y != 0:
             #print("Success!")
             return (x,y)
