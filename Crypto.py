@@ -1,6 +1,7 @@
 import ECGroupOperations as EC
 from random import randint
 from string import ascii_letters, digits, punctuation, whitespace
+from math import floor
 
 p = 6277101735386680763835789423207666416083908700390324961279 #Prime modulus
 r = 6277101735386680763835789423176059013767194773182842284081 #Order of group
@@ -14,7 +15,6 @@ a = -3 # Coefficient of x^3 in the elliptic curve
 EC.set_curve(a, b, p)
 
 G = (Gx, Gy)
-LIBRARY = [EC.ec_multiply(G, x) for x in range(0,127)] # Message encoding library
 
 #priv_key = 0 # Initial global declarations of public and private key
 #pub_key = 0
@@ -53,18 +53,40 @@ def ec_decrypt(encm, priv_key):
 
     return m
 
-    # Turns an ASCII character message in to an element of the Group
 def encode(message):
-    if message in (ascii_letters + digits + punctuation):
-        y = int(ord(message))
-        #print (y)
-        return LIBRARY[y]
-    else: return False
+    k = 20
+    m = 0
 
-    # Turns an encoded message into an ASCII character
+    for l in message:
+        m = pow(2, 7)*m + ord(l)
+
+    if (20*m + 20) >= p:
+        s = "Message too large to encode"
+        raise Exception(s)
+    for i in range(1, 20):
+        x = k*m + i
+        c = (pow(x, 3, p) + a*x + b) % p
+        y = EC.modular_sqrt(c, p)
+        if y != 0:
+            #print("Success!")
+            return (x,y)
+    print( "No encoding found") 
+
 def decode(message):
-    x = 0
-    while message != LIBRARY[x]: 
-        x += 1
-        #print(str(LIBRARY[x]) + "   " + str(x) + " = " + str(chr(x)))
-    return chr(x)
+
+    k = 20
+    x = message[0]
+    plaintext = ""
+
+    m = (x-1)//k
+    length = pow(2, 7)
+    while (m % length) != m:
+        #print(bin(m))
+        bin_char = m % length
+      #  print( str(type(bin_char)) + str(type(m)) + str(type(length)))
+        char = chr(bin_char)
+        plaintext = char + plaintext
+        m = (m - bin_char)//length
+
+    plaintext = chr(m) + plaintext
+    return plaintext

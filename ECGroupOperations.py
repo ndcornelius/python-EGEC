@@ -1,5 +1,5 @@
 import math
-import randint from random
+from random import randint
 
 # Group operations for a group on Elliptic Curves for use in implementation of El-Gamal cryptosystem.
 
@@ -64,7 +64,6 @@ def ec_add(m, n):
     
     return (x3, y3)
 
-track = 0
     # An efficient algorithm for finding a certain power of the generator.
 def ec_multiply(G, m):
     if m < 0: raise Exception( "Cannot multiply by a negative number")
@@ -114,3 +113,51 @@ def gen_prime(lb, ub):
     while True:
         prime = randint(lb, ub)
         if isprime(prime) is True: return prime
+
+
+def eulers_criterion(a, p):
+    ec = pow(a, (p-1)//2, p)
+    if ec == p-1: return -1
+    else: return ec
+
+
+    # Tonelli-Shanks algorithm
+    # Assumes p is odd prime and a is a quadratic residue mod p
+def modular_sqrt(a, p):
+    a = a % p    
+
+    ec = eulers_criterion(a, p) # Checking to make sure that a is indeed a quadratic residue mod p
+    if ec == -1: return 0
+    
+    s = p-1
+    e = 0
+    while s % 2 == 0: # Factoring p-1 into s * 2^e where s is odd.
+        s //= 2
+        e += 1
+
+    if s == 1: return pow(a, (p+1)//4, p)
+
+    i = 1
+    n = eulers_criterion(i, p) # Find an n that is a quadratic nonresidue
+    while n != -1:
+        
+        i += 1
+        n = eulers_criterion(i, p)
+
+    g = pow(n, s, p)
+    x = pow(a, (s + 1) // 2, p)
+    b = pow(a, s, p)
+    r = e
+
+    m = 1
+    while True:
+        if b % p == 1: return x
+        while pow(t, pow(2, m), p) != 1:
+            m += 1
+        d = pow (g, pow(2, m-i-1), p)
+     
+        g = g * (d * d) % p
+        x = x * d % p
+        b = b * (d * d) % p
+        r = m
+            
