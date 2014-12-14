@@ -36,6 +36,11 @@ def ec_add(m, n):
         x3 = x1
         y3 = y1
 
+    elif x1 == x2 and y1 == y2: # The points are the same
+        k = ((3*(x1**2) + a)*modinv(((2*y1 % p)), p)) % p
+        x3 = ((k**2) - 2*x1) % p
+        y3 = (k * (x1-x3) - y1) % p
+
     ################################################################
 
     elif x1 == x2: # The points are inverse to each other
@@ -47,20 +52,15 @@ def ec_add(m, n):
 
     #################################################################
 
-    if x1 != x2: # The points are NOT inverse to each other
-        x3 = ((k**2) - x1 - x2) % p
-        y3 = (k * (x1-x3) - y1) % p
+        if x1 != x2: # The points are NOT inverse to each other
+            x3 = ((k**2) - x1 - x2) % p
+            y3 = (k * (x1-x3) - y1) % p
 
     #################################################################
 
-    elif x1 == x2 and y1 == y2: # The points are the same
-        k = ((3*(x1**2) + a)*modinv(((2*y1 % p)), p)) % p
-        x3 = ((k**2) - 2*x1) % p
-        y3 = (k * (x1-x3) - y1) % p
-
-    else:
-        x3 = -1
-        y3 = -1
+        else:
+            x3 = -1
+            y3 = -1
     
     return (x3, y3)
 
@@ -114,7 +114,7 @@ def gen_prime(lb, ub):
         prime = randint(lb, ub)
         if isprime(prime) is True: return prime
 
-
+    # Eulers criterion for determining if a number 'a' is a quadratic residue mod a pime 'p'.
 def eulers_criterion(a, p):
     ec = pow(a, (p-1)//2, p)
     if ec == p-1: return -1
@@ -123,41 +123,80 @@ def eulers_criterion(a, p):
 
     # Tonelli-Shanks algorithm
     # Assumes p is odd prime and a is a quadratic residue mod p
+    # Returns 'a', one of two modular square roots. However, '-a' is also a solution.
 def modular_sqrt(a, p):
     a = a % p    
 
     ec = eulers_criterion(a, p) # Checking to make sure that a is indeed a quadratic residue mod p
     if ec == -1: return 0
     
-    s = p-1
-    e = 0
+    s , e = p-1, 0
     while s % 2 == 0: # Factoring p-1 into s * 2^e where s is odd.
         s //= 2
         e += 1
 
-    if s == 1: return pow(a, (p+1)//4, p)
+    if e == 1: return pow(a, (p+1)//4, p)
 
-    i = 1
-    n = eulers_criterion(i, p) # Find an n that is a quadratic nonresidue
-    while n != -1:
-        
-        i += 1
-        n = eulers_criterion(i, p)
+    n = 2
+    i = eulers_criterion(n, p) # Find an n that is a quadratic nonresidue
+    while i != -1: 
+        n += 1
+        i = eulers_criterion(i, p)
 
     g = pow(n, s, p)
     x = pow(a, (s + 1) // 2, p)
     b = pow(a, s, p)
     r = e
 
-    m = 1
     while True:
+        m = 1
         if b % p == 1: return x
-        while pow(t, pow(2, m), p) != 1:
+        while pow(b, pow(2, m), p) != 1:
             m += 1
-        d = pow (g, pow(2, m-i-1), p)
+
+        d = pow (g, pow(2, r-m-1), p)
      
-        g = g * (d * d) % p
-        x = x * d % p
-        b = b * (d * d) % p
+        g = (d * d) % p
+        x = (x * d) % p
+        b = (b * (d * d)) % p
         r = m
-            
+
+def num_points(a, b, p):
+    num_points = 1
+    a, b = a % p, b % p
+
+    if (4 * (a**3) + 27 * (b**2)) % p == 0:
+        s = "Curve does not form a group."
+        raise Exception(s)
+
+    for x in range(p):
+        n = (pow(x, 3, p) + (a * x) + b) % p
+        if modular_sqrt(n, p) != 0:
+             num_points += 2
+
+    return num_points
+        
+def find_generator(a, b, p):
+    points = num_points(a, b, p)
+    set_curve(a, b, p)
+
+    for x in range(p):
+        n = (pow(x, 3, p) + (a * x) + b) % p
+        y = modular_sqrt(n, p)
+ #       print("Mod root = %d" % (y))
+        print( "(%d, %d)" % (x, y))
+
+        if y != 0:
+            order = 1
+            u, v, = x, y
+            while (u, v) != ('e', 'e'):
+                c = ec_add((u,v), (x,y))
+                order += 1
+                u, v = c[0], c[1]
+ #               print(order)
+#                print(c)
+         #       if order > points: break
+            if order == points:
+                return (x, y)
+
+    return (-1, -1)
