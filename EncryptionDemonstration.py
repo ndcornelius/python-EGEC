@@ -5,7 +5,7 @@ print("Keys:\nPrivate key: %s\n\nPublic key: %s\n" % (str(alice_keys[0]), str(al
 
 bob_keys = Crypto.generate_crypto_keys()
 
-#print ( "Bob's Keys:\nPrivate key: %s\nPublic key: %s\n" % (str(bob_keys[0]), str(bob_keys[1])))
+#  print ( "Bob's Keys:\nPrivate key: %s\nPublic key: %s\n" % (str(bob_keys[0]), str(bob_keys[1])))
 
 message = input("Enter message: ")
 print()
