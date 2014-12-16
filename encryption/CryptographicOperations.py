@@ -1,6 +1,9 @@
-import GroupOperations as Group
 from random import randint
-from ModularMath import modular_sqrt
+
+from encryption import GroupOperations as Group
+
+from encryption.ModularMath import modular_sqrt
+
 
 p = 6277101735386680763835789423207666416083908700390324961279  # Prime modulus
 r = 6277101735386680763835789423176059013767194773182842284081  # Order of group

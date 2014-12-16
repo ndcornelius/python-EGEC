@@ -1,9 +1,9 @@
-import GroupOperations as group
+from encryption import GroupOperations as group
 
 #EC.set_curve( 5, 2, 23)
 
 #G = [(17,3), (0,5), (8,5), (15, 5), (18,6), (6,8), (7,9), (1,10), (11,10), (20,11), (20, 12), (1,13), (11,13),  (7,14), (6,15), (18,17), (0,18), (8,18), (15,18), (17,20)]
-from ModularMath import is_prime
+from encryption.ModularMath import is_prime
 
 print("----------------------------------------------------")
 print('{0:^30}|{1:^7}|{2:^12}'.format('Curve Parameters', 'Order', 'Generator'))

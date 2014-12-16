@@ -1,5 +1,5 @@
 # Group operations for a group on Elliptic Curves for use in implementation of El-Gamal cryptosystem.
-from ModularMath import modular_inverse, modular_sqrt
+from encryption.ModularMath import modular_inverse, modular_sqrt
 
 a = 0
 b = 1
