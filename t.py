@@ -1,5 +1,10 @@
-from GroupOperations import find_generator, num_points, set_curve
+from GroupOperations import find_generator, get_order, set_curve, ec_add
+from ModularMath import modular_inverse
 
-print(num_points(5, 2, 23))
-set_curve(5, 2, 23)
-print(find_generator(5, 2, 23))
+set_curve(1, 0, 11)
+x = (9, 1)
+a = ec_add(x, x)
+print(a)
+for i in range(11):
+    print(ec_add(a, x))
+    a = ec_add(a, x)
