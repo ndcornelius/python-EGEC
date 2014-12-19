@@ -1,27 +1,28 @@
 from random import randint
 from math import ceil, sqrt
 
-# egcd and modinv functions obtained from http://stackoverflow.com/questions/4798654/modular-multiplicative-inverse-function-in-python.
-#Original source: https://en.wikibooks.org/wiki/Algorithm_Implementation/Mathematics/Extended_Euclidean_algorithm
+#  egcd and modular_inv functions obtained from
+#  http://stackoverflow.com/questions/4798654/modular-multiplicative-inverse-function-in-python and modified.
+#  Original source: https://en.wikibooks.org/wiki/Algorithm_Implementation/Mathematics/Extended_Euclidean_algorithm
 
-# Recursive Euclidian Algorithm
-def egcd(a, b):
+
+def egcd(a, b):  # Recursive Euclidian Algorithm
     if a == 0:
         return (b, 0, 1)
     else:
         g, y, x = egcd(b % a, a)
         return (g, x - (b // a) * y, y)
 
-        # Modular Inverse
-def modular_inverse(a, m):
+
+def modular_inverse(a, m):  # Modular Inverse
     g, x, y = egcd(a, m)
     if g != 1:
         raise Exception('Modular inverse for %d mod %d does not exist' % (a, m))
     else:
         return x % m
 
-        # Simple VERY INEFFICIENT primality test
-def is_prime(x):
+
+def is_prime(x):  # Simple VERY INEFFICIENT primality test
     if x == 1:
         return False
     elif x <= 0:
@@ -35,18 +36,20 @@ def is_prime(x):
                 return False
         return True
 
-        # Generates a prime between the lower bound and the upper bound
-def gen_prime(lb, ub):
+
+def gen_prime(lb, ub):  # Generates a prime between the lower bound and the upper bound
 
     while True:
         prime = randint(lb, ub)
-        if is_prime(prime) is True: return prime
+        if is_prime(prime) is True:
+            return prime
 
-        # Eulers criterion for determining if a number 'a' is a quadratic residue mod a pime 'p'.
-def eulers_criterion(a, p):
+
+def eulers_criterion(a, p):  # Eulers criterion for determining if a number 'a' is a quadratic residue mod a pime 'p'.
     ec = pow(a, (p - 1) // 2, p)
     if ec == p-1: return -1
-    else: return ec
+    else:
+        return ec
 
 
     # Tonelli-Shanks algorithm
@@ -73,7 +76,6 @@ def modular_sqrt(a, p):
 
     g = pow(n, s, p)
     x = pow(a, (s + 1) // 2, p)
-    #  print("a = %d, s = %d, e = %d, p = %d" % (a, s, e, p))
     b = pow(a, s, p)
     r = e
 

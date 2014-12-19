@@ -5,7 +5,6 @@ user_input, a, b, p = 0, 0, 0, 0
 
 t = False
 while not t:
-
     print("Enter '1' to find properties of a specific curve.")
     print("Enter '2' to find properties of all curves with prime 5 <= p <= 101.")
     print("(Warning: option 2 may take several minutes.)")
@@ -64,9 +63,11 @@ if user_input == 1:
         #  curve = "y^2 = x^3 + {0:d}x + {1:d}  mod {2:d}".format(a, b, p)
         curve = "a = {0:<3d}  b = {1:<3d}  p = {2:<3d}".format(a, b, p)
         print("{0:^30s}| {1:<5d} |{2!s:^12}".format(curve, order, generator))
+    else:
+        print("\nEntered parameters do not form a group.")
+
 
 else:
-
     print("----------------------------------------------------")
     print('{0:^30}|{1:^7}|{2:^12}'.format('Curve Parameters', 'Order', 'Generator'))
     print("----------------------------------------------------")

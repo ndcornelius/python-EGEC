@@ -9,7 +9,7 @@ p = 5
 def set_curve(c, d, e):
   
     if (4*(c**3) + 27*(d**2)) % e == 0:
-        print ("Invalid coefficients. Elliptic curve does not form a group.")
+        print("Invalid coefficients. Elliptic curve does not form a group.")
     else:
  
         global a
@@ -110,7 +110,6 @@ def find_generator(a, b, p):
         n = (pow(x, 3, p) + (a * x) + b) % p
         y = modular_sqrt(n, p)
 
-        # print( "(%d, %d)" % (x, y))
         if y != -1 and y != 0:
             order = 1
             u, v, = x, y
